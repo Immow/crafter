@@ -6,11 +6,13 @@ local Crafter = {
 		{bannana = 1, melon = 1},
 		{bannana = 2, melon = 2},
 		{bannana = 3, melon = 3},
+		{apple = 1, melon = 1},
 	},
 	result = {
 		"apple",
 		"corn",
 		"cucumber",
+		"strawberry"
 	},
 	items = {}
 }
