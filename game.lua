@@ -2,13 +2,16 @@ require("tprint")
 NewObject = require("object")
 
 local Game = {}
-local fruitIndex = require("assets.fruitindex")
 local newCrafter = require("crafter")
 local Crafter
 
 local objectList = {
 	{name = "bannana", x = 600, y = 100},
-	{name = "melon", x = 500, y = 100},
+	{name = "bannana", x = 600, y = 150},
+	{name = "bannana", x = 600, y = 200},
+	{name = "melon", x = 600, y = 250},
+	{name = "melon", x = 600, y = 300},
+	{name = "melon", x = 600, y = 350},
 	-- {name = "wood"  , x = 600, y = 200, color = {0,1,1,1}},
 	-- {name = "wood"  , x = 600, y = 300, color = {0,1,1,1}},
 }
@@ -39,11 +42,13 @@ function Game:mousepressed(x, y, button, isTouch)
 end
 
 function Game:mousereleased(x, y, button, isTouch)
+	Crafter:mousereleased(x, y, button, isTouch)
 	for _, o in pairs(Objects) do
 		o:mousereleased(x, y, button, isTouch)
 		if Crafter:onCraftBox(o.x, o.y) then
 			Crafter:addItem(o)
-			o.state = "inCrafter"
+		else
+			Crafter:removeItem(o)
 		end
 	end
 end

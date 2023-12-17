@@ -6,12 +6,11 @@ local Crafter = {
 		{bannana = 1, melon = 1},
 		{bannana = 2, melon = 2},
 		{bannana = 3, melon = 3},
-		-- {stone = 4, wood = 4},
 	},
 	result = {
 		"apple",
-		"apple",
-		"apple",
+		"corn",
+		"cucumber",
 	},
 	items = {}
 }
@@ -30,7 +29,7 @@ function Crafter.new(settings)
 	instance.button = newButton.new({
 									x = settings.x + 5,
 									y = settings.y + settings.h - 55,
-									name = "craft",
+									text = "craft",
 									state = "game",
 									fn = function () Crafter:craft() end
 								})
@@ -45,6 +44,10 @@ function Crafter:mousepressed(x, y, button, isTouch)
 	self.button:mousepressed(x, y, button, isTouch)
 end
 
+function Crafter:mousereleased(x, y, button, isTouch)
+
+end
+
 function Crafter:countObjects()
 	local count = {}
 	for _, i in ipairs(self.items) do
@@ -54,7 +57,6 @@ function Crafter:countObjects()
 			count[i.name] = count[i.name] + 1
 		end
 	end
-	-- print(Tprint(count))
 	return count
 end
 
@@ -86,7 +88,17 @@ end
 
 function Crafter:addItem(i)
 	if i.state == "inCrafter" then return end
-	table.insert(self.items, i)
+	i.state = "inCrafter"
+	self.items[#self.items + 1] = i
+end
+
+function Crafter:removeItem(i)
+	for key, value in ipairs(self.items) do
+		if i == value then
+			table.remove(self.items, key)
+			i.state = ""
+		end
+	end
 end
 
 function Crafter:onCraftBox(ox, oy)
@@ -119,6 +131,7 @@ function Crafter:draw()
 	-- self:drawRecipes()
 	self:drawCraftBox()
 	self.button:draw()
+	love.graphics.print(tostring(#self.items))
 end
 
 return Crafter
