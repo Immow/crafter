@@ -42,28 +42,6 @@ function Crafter.new(settings)
 end
 
 function Crafter:load()
-	-- local y = 0
-	-- local x = 530
-	-- for _, o in ipairs(self.result) do
-	-- 	table.insert(self.fruitListResult, newIcon.new({x = 600, y = y, name = o}))
-	-- 	y = y + 20
-	-- end
-
-	-- y = 0
-	-- for i, value in ipairs(self.recipes) do
-	-- 	local c = 0
-	-- 	for k, v in pairs(value) do
-	-- 		c = c + 1
-	-- 		if c == 2 then
-	-- 			x = x + 30
-	-- 		end
-	-- 		table.insert(self.fruitListResult, newIcon.new({x = x, y = y, name = k}))
-	-- 	end
-	-- 	y = y + 20
-	-- 	x = x - 30
-	-- end
-	-- print(Tprint(self.fruitListResult))
-
 	self:generateIngredientIcons()
 	self:generateResultRecipeIcons()
 end
