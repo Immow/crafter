@@ -1,5 +1,3 @@
-
-
 local Object = {}
 Object.__index = Object
 
@@ -32,6 +30,14 @@ function Object:isMouseOnObject(mx, my)
 	local xRegion = self.x <= mx and self.x + self.w >= mx
 	local yRegion = self.y <= my and self.y + self.h >= my
 	return xRegion and yRegion
+end
+
+function Object:setXpos(x)
+	self.x = x
+end
+
+function Object:setYpos(y)
+	self.y = y
 end
 
 function Object:mousepressed(mx,my,mouseButton,isTouch)

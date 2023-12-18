@@ -1,12 +1,13 @@
 local newButton = require("button")
 local batteries = require("batteries")
+local newIcon = require("icon")
 local font = love.graphics.getFont()
 
 local Crafter = {
 	recipes = {
-		{bannana = 1, melon = 1},
+		{bannana = 1, melon = 2},
 		{bannana = 2, melon = 2},
-		{bannana = 3, melon = 3},
+		{bannana = 3, melon = 2},
 		{apple = 1, melon = 1},
 	},
 	result = {
@@ -15,7 +16,8 @@ local Crafter = {
 		"cucumber",
 		"strawberry"
 	},
-	items = {}
+	items = {},
+	fruitListResult = {}
 }
 
 Crafter.__index = Crafter
@@ -40,7 +42,56 @@ function Crafter.new(settings)
 end
 
 function Crafter:load()
+	-- local y = 0
+	-- local x = 530
+	-- for _, o in ipairs(self.result) do
+	-- 	table.insert(self.fruitListResult, newIcon.new({x = 600, y = y, name = o}))
+	-- 	y = y + 20
+	-- end
 
+	-- y = 0
+	-- for i, value in ipairs(self.recipes) do
+	-- 	local c = 0
+	-- 	for k, v in pairs(value) do
+	-- 		c = c + 1
+	-- 		if c == 2 then
+	-- 			x = x + 30
+	-- 		end
+	-- 		table.insert(self.fruitListResult, newIcon.new({x = x, y = y, name = k}))
+	-- 	end
+	-- 	y = y + 20
+	-- 	x = x - 30
+	-- end
+	-- print(Tprint(self.fruitListResult))
+
+	self:generateIngredientIcons()
+	self:generateResultRecipeIcons()
+end
+
+function Crafter:generateResultRecipeIcons()
+	local y = 0
+	local x = 530
+	for _, o in ipairs(self.result) do
+		table.insert(self.fruitListResult, newIcon.new({x = 600, y = y, name = o}))
+		y = y + 20
+	end
+end
+
+function Crafter:generateIngredientIcons()
+	local y = 0
+	local x = 530
+	for _, value in ipairs(self.recipes) do
+		local c = 0
+		for k, v in pairs(value) do
+			c = c + 1
+			if c == 2 then
+				x = x + 30
+			end
+			table.insert(self.fruitListResult, newIcon.new({x = x, y = y, name = k}))
+		end
+		y = y + 20
+		x = x - 30
+	end
 end
 
 function Crafter:mousepressed(x, y, button, isTouch)
@@ -114,15 +165,19 @@ function Crafter:drawCraftBox()
 end
 
 function Crafter:drawRecipes()
-	local offset = 0
-	local x, y = 550, 0
+	local x, y = 0, 0
 	for _, value in ipairs(self.recipes) do
+		x = 550
+		love.graphics.print("=", x + 40 , y)
 		for k, v in pairs(value) do
-			love.graphics.print(k..": ["..v.."]", x + offset, y)
-			offset = offset + font:getWidth(k) + font:getWidth(" ["..tostring(v).."]") + 8
+			love.graphics.print(tostring(v), x, y)
+			x = x + 30
 		end
-		y = y  + 15
-		offset = 0
+		y = y  + 20
+	end
+
+	for _, value in ipairs(self.fruitListResult) do
+		value:draw()
 	end
 end
 
