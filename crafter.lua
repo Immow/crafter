@@ -1,5 +1,6 @@
 local newButton = require("button")
 local batteries = require("batteries")
+local font = love.graphics.getFont()
 
 local Crafter = {
 	recipes = {
@@ -33,7 +34,7 @@ function Crafter.new(settings)
 									y = settings.y + settings.h - 55,
 									text = "craft",
 									state = "game",
-									fn = function () Crafter:craft() end
+									fn = function () instance:craft() end
 								})
 	return instance
 end
@@ -73,7 +74,7 @@ function Crafter:craftObject(o)
 	for i = 1, #self.recipes do
 		if batteries.tablex.shallow_equal(self.recipes[i], o) then
 			self:removeCraftListItems()
-			table.insert(Objects, NewObject.new({x = 100, y = 100, name = self.result[i]}))
+			table.insert(Objects, NewObject.new({x = self.craftbox.x  + self.craftbox.w / 2 - 16, y = self.craftbox.y + self.craftbox.h / 2 - 16, name = self.result[i]}))
 		end
 	end
 end
@@ -81,7 +82,6 @@ end
 function Crafter:craft()
 	if #self.items < 1 then return end
 	self:craftObject(self:countObjects())
-
 end
 
 function Crafter:update(dt)
@@ -114,23 +114,22 @@ function Crafter:drawCraftBox()
 end
 
 function Crafter:drawRecipes()
-	for i, _ in ipairs(self.recipes) do
-		local name = self.recipes[i].name
-		local o1   = self.recipes[i][1].name
-		local a1   = self.recipes[i][1].amount
-		local o2   = self.recipes[i][2].name
-		local a2   = self.recipes[i][2].amount
-		love.graphics.print(
-			name..": "..o1.." ["..a1.."], "..o2.." ["..a2.."]",
-			self.x + self.w + 5,
-			self.y + self.fontH * (i - 1))
+	local offset = 0
+	local x, y = 550, 0
+	for _, value in ipairs(self.recipes) do
+		for k, v in pairs(value) do
+			love.graphics.print(k..": ["..v.."]", x + offset, y)
+			offset = offset + font:getWidth(k) + font:getWidth(" ["..tostring(v).."]") + 8
+		end
+		y = y  + 15
+		offset = 0
 	end
 end
 
 function Crafter:draw()
 	love.graphics.setColor(self.color)
 	love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
-	-- self:drawRecipes()
+	self:drawRecipes()
 	self:drawCraftBox()
 	self.button:draw()
 	love.graphics.print(tostring(#self.items))
