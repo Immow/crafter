@@ -1,7 +1,7 @@
 local newButton = require("button")
 local batteries = require("batteries")
 local newIcon = require("icon")
-local font = love.graphics.getFont()
+local NewObject = require("object")
 
 local Crafter = {
 	recipes = {
@@ -48,7 +48,6 @@ end
 
 function Crafter:generateResultRecipeIcons()
 	local y = 0
-	local x = 530
 	for _, o in ipairs(self.result) do
 		table.insert(self.fruitListResult, newIcon.new({x = 600, y = y, name = o}))
 		y = y + 20
@@ -93,7 +92,7 @@ function Crafter:countObjects()
 end
 
 function Crafter:removeCraftListItems()
-	for key, value in pairs(self.items) do
+	for _, value in pairs(self.items) do
 		value:setForRemoval()
 	end
 	self.items = {}
@@ -147,7 +146,7 @@ function Crafter:drawRecipes()
 	for _, value in ipairs(self.recipes) do
 		x = 550
 		love.graphics.print("=", x + 40 , y)
-		for k, v in pairs(value) do
+		for _, v in pairs(value) do
 			love.graphics.print(tostring(v), x, y)
 			x = x + 30
 		end

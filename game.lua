@@ -1,8 +1,8 @@
 require("tprint")
-NewObject = require("object")
+local NewObject = require("object")
+local newCrafter = require("crafter")
 
 local Game = {}
-local newCrafter = require("crafter")
 local Crafter
 
 local objectList = {
@@ -12,25 +12,21 @@ local objectList = {
 	{name = "melon", x = 600, y = 250},
 	{name = "melon", x = 600, y = 300},
 	{name = "melon", x = 600, y = 350},
-	-- {name = "wood"  , x = 600, y = 200, color = {0,1,1,1}},
-	-- {name = "wood"  , x = 600, y = 300, color = {0,1,1,1}},
 }
 
 Objects = {}
 
-function Game:drawObjects()
-	for _, value in ipairs(Objects) do
-		value:draw()
-	end
-end
-
 function Game:load()
 	Crafter = newCrafter.new({x = 10, y = 10, w = 500, h = 500})
+	self:generateObjects()
 
+	Crafter:load()
+end
+
+function Game:generateObjects()
 	for _, o in ipairs(objectList) do
 		table.insert(Objects, NewObject.new({x = o.x, y = o.y, name = o.name}))
 	end
-	Crafter:load()
 end
 
 function Game:mousepressed(x, y, button, isTouch)
@@ -60,6 +56,12 @@ function Game:update(dt)
 		if o.remove then
 			table.remove(Objects, k)
 		end
+	end
+end
+
+function Game:drawObjects()
+	for _, value in ipairs(Objects) do
+		value:draw()
 	end
 end
 
